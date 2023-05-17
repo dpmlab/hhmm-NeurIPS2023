@@ -57,6 +57,40 @@
 >### Code 
 > - event.py
 
+## Fitting H-HMM to test or heldout data
+>Here we take the heldout or test dataset and fit the learned projection matrices, W, from the training dataset. Similar 
+to the training data, stack fMRI data, per subject, and stimulus embeddings by video or scan session. fMRI data should 
+>be inputted into the model with shape time (TRs) by voxels. Likewise, stimulus embedding data should be inputted as 
+>sentences by embeddings.
 
+> Next, index labels for the fMRI data and stimulus embeddings represent the timepoint in which the videos occur.
+>E.g. fMRI input with data from two videos, where the first video is 3 TRs long and the second 5 TRs should have the 
+>following labels: [0, 3]. And stimulus input with 2 sentences from the first video and 4 from the second should 
+>have the following labels: [0, 2]. Note that this time, we do not input a label for each timepoint as we did for the 
+> training data. 
+>
+> Lastly, we pass a list of the number of events for each video in the test set. E.g. Data for which the first video 
+>has 5 events, the second has 7, and the third has 3 would need the following list: [5, 7, 3]
+    
+    from test_fits import fit_to_half
+    
+    X, session_idx = [], []
+    stim_embeddings, stim_idx = [], []
 
+    all_nevs = []
+    
+    fit_fname = '' # this is the filepath to save the data out to.
+    
+    fit_to_half(X, stim_embeddings, session_idx, stim_idx, all_nevs, fit_fname)
 
+> ### Software versions
+> - Python v.3.7.11
+> - Brainiak v.0.11
+
+> ### Anaconda environment file
+> - conda-envs/brainiak_env.yml
+>### Code 
+> - fit-test-data/
+>> - test_fits.py
+>
+>

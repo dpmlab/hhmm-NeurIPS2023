@@ -50,32 +50,3 @@ def fit_to_half(X, embeddings, label_idxs, emb_label_idxs, all_n_evs, fit_fname,
 
     # Save out ev_fits to whatever file format you choose.
 
-
-## Here we take the heldout or test dataset and fit the learned projection matrices, W, from the training dataset.
-
-
-## Stack fMRI data, per subject, and stimulus embeddings by video or scan session.
-    ### fMRI data should be inputted into the model with shape time x voxel.
-    ### Stimulus embedding data should be inputted as sentences x embeddings.
-
-## Index labels for fMRI data and stimulus embeddings represent the timepoint in which the videos occur.
-    ### E.g. fMRI input with data from two videos, where the first video is 3 TRs long and the second 5 TRs
-    ### should have the following labels: [0, 3]
-    ### Stimulus input with 2 sentences from the first video and 4 from the second should have the following
-    ### labels: [0, 2]
-
-X, session_idx = [], []
-stim_embeddings, stim_idx = [], []
-
-
-## all_nevs is a list of the number of events for each video in the test set.
-    ### E.g. the first video has 5 events, the second has 7, and the third has 3: [5, 7, 3]
-all_nevs = []
-
-## fit_fname is the filepath to your training fits. These files are read in to extract learned Ws before fitting to the
-    ### heldout dataset
-
-fit_fname = ''
-
-fit_to_half(X, stim_embeddings, session_idx, stim_idx, all_nevs, fit_fname)
-
