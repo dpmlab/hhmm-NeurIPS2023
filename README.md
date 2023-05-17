@@ -48,6 +48,15 @@
     es = EventSegment(shared_dim=D, align_features=True, event_length=event_length, ridge_alpha=ridge_alpha)
     fit = es.fit(X=X, video_label_TR=session_labels, video_label_sent=stim_labels)
     
+> ### Software versions
+> - Python v.3.8.13
+> - Scipy v.1.7.3
+> - Scikit-learn v.1.0.2
+> ### Anaconda environment file
+> - conda-envs/hyperhmmenv.yml
+>### Code 
+> - event.py
+
 
 
 
