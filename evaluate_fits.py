@@ -75,19 +75,4 @@ def get_var(ev_reps, verbose=False):
 
     return fmri_ve, stim_fmri_ve
 
-train_fits_split1 = None # read in Event object from H-HMM fit on training data
-test_fits_split2 = None # read in Event object from fitting the temporal alignment only on the test data
-
-## Both fMRI and stimulus embeddings should be from the heldout set (test data)
-    ### Stack fMRI data, per subject, and stimulus embeddings by video or scan session.
-    ### fMRI data should be inputted into the model with shape time x voxel.
-    ### Stimulus embedding data should be inputted as sentences x embeddings.
-X_split2 = []
-embeddings_split2 = []
-
-# Compute the learned event representations in test data from training fit learned projection matrices and intercept terms
-event_reps = get_ev_reps(train_fits_split1.Ws, train_fits_split1.intcp, X_split2, test_fits_split2.segments_, embeddings_split2)
-
-# Compute variance explained for both the fMRI and stimulus data
-fmri_ve, stim_fmri_ve = get_var(event_reps)
 

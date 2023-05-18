@@ -71,6 +71,9 @@ to the training data, stack fMRI data, per subject, and stimulus embeddings by v
 >
 > Lastly, we pass a list of the number of events for each video in the test set. E.g. Data for which the first video 
 >has 5 events, the second has 7, and the third has 3 would need the following list: [5, 7, 3]
+>
+>Note that *fit_to_half* takes in a parameter called Baseline. When set to True, this function can be used to fit a 
+>baseline (or weights drawn from a standard normal distribution) to whichever split data used here.  
     
     from test_fits import fit_to_half
     
@@ -92,5 +95,38 @@ to the training data, stack fMRI data, per subject, and stimulus embeddings by v
 >### Code 
 > - fit-test-data/
 >> - test_fits.py
+>
+## Evaluating fits
+> To evaluate fits, either training/test data or baseline measures, we need the learned weights and intercept terms
+>from the training fit and the segmentation probabilities from the test fit (temporal-only alignment). Note that 
+>se chose to save out the entire Object from each fit and read in saved Object pickle files in our experiments. Next,
+>we need the stacked fMRI data, per subject, and stimulus embeddings by video or scan session from the test dataset.
+>Similar to training and testing, we stack the fMRI data and stimulus embedding data into shape time by voxel and
+>sentences by embeddings, respectively. 
+>
+>First, we project the learned weight matrices and intercept terms to the heldout set to compute the learned latent
+>event representations, using *get_ev_reps*. We evaluate the learned projections by a variance explained measure. 
+>*get_var* returns the variance explained scores for the fMRI event clusters and stimuli-fMRI event clusters.  
+
+    from evaluate_fits import get_ev_reps, get_var
+    
+    train_fits = None # read in Event object from H-HMM fit on training data
+    test_fits = None # read in Event object from fitting the temporal alignment only on the test data
+
+    X_test_ds = []
+    embeddings_test_ds = []
+
+    # Compute the learned latent event representations in test data from training fit learned projection matrices and intercept terms
+    event_reps = get_ev_reps(train_fits.Ws, train_fits.intcp, X_test_ds, test_fits.segments_, embeddings_test_ds)
+
+    # Compute variance explained for both the fMRI and stimulus data
+    fmri_ve, stim_fmri_ve = get_var(event_reps) 
+    
+> ### Software versions
+> - Python v.3.8.13
+> ### Anaconda environment file
+> - conda-envs/hyperhmmenv.yml
+>### Code 
+> - evaluate_fits.py
 >
 >
